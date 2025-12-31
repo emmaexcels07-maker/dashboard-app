@@ -1,38 +1,42 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+
   server: {
     port: 3000,
-    open: true, // Automatically open browser
+    open: true,
   },
+
   build: {
-    // Enable source maps for better debugging
-    sourcemap: true,
-    // Optimize chunk splitting
+    sourcemap: false, // ❗ Disable for Render (smaller & faster builds)
+
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          router: ['react-router-dom'],
-          firebase: ['firebase'],
-          charts: ['recharts'],
+        manualChunks(id) {
+          if (!id.includes("node_modules")) return;
+
+          if (id.includes("react")) return "react";
+          if (id.includes("react-router-dom")) return "router";
+          if (id.includes("firebase")) return "firebase";
+          if (id.includes("recharts")) return "charts";
+
+          return "vendor";
         },
       },
     },
-    // Enable minification
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true, // Remove console.log in production
-        drop_debugger: true,
-      },
-    },
+
+    minify: "esbuild", // ⚡ Faster & safer than terser on Render
+    target: "es2018", // Broad compatibility, faster build
+    chunkSizeWarningLimit: 1000,
   },
-  // Optimize dependencies
+
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', 'firebase'],
+    include: [
+      "react",
+      "react-dom",
+      "react-router-dom",
+    ],
   },
-})
+});
