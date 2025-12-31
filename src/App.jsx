@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, HashRouter } from "react-router-dom";
 import Login from "./pages/Login.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import { useAuth } from "./context/AuthContext.jsx";
@@ -14,14 +14,15 @@ function App() {
           path="/"
           element={!user ? <Login /> : <Navigate to="/dashboard" replace />}
         />
-        <Route
-          path="/dashboard"
-          element={user ? <Dashboard /> : <Navigate to="/" replace />}
-        />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="*" element={<Login />} /> {/* fallback route */}
         {/* Add more routes here */}
       </Routes>
     </Router>
   );
 }
+<HashRouter>
+  <Routes> … </Routes>
+</HashRouter>
 
 export default App;
