@@ -1,6 +1,9 @@
 import React, { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext.jsx";
+import "./App.css";
+import "./styles/theme.css";
+import "./styles/responsive.css";
 
 // Lazy load components for better performance
 const Login = lazy(() => import("./pages/Login.jsx"));

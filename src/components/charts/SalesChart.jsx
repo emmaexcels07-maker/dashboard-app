@@ -1,15 +1,29 @@
-import { LineChart, Line, XAxis, Tooltip } from "recharts";
+import { LineChart, Line, XAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import Card from "../ui/Card.jsx";
 
-const SalesChart = ({ data }) => (
-  <Card>
-    <h3>Sales</h3>
-    <LineChart width={400} height={250} data={data}>
-      <XAxis dataKey="date" />
-      <Tooltip />
-      <Line dataKey="amount" stroke="#6366f1" />
-    </LineChart>
-  </Card>
-);
+const SalesChart = ({ data }) => {
+  if (!data || data.length === 0) {
+    return (
+      <Card>
+        <h3>Sales</h3>
+        <p className="no-data">No sales data available</p>
+      </Card>
+    );
+  }
+
+  return (
+    <Card>
+      <h3>Sales</h3>
+      <ResponsiveContainer width="100%" height={250}>
+        <LineChart data={data}>
+          <XAxis dataKey="date" />
+          <Tooltip />
+          <Legend />
+          <Line dataKey="amount" stroke="#6366f1" strokeWidth={2} />
+        </LineChart>
+      </ResponsiveContainer>
+    </Card>
+  );
+};
 
 export default SalesChart;
